@@ -2,9 +2,9 @@
 import path from 'path';
 import webpack from 'webpack';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
-import cssnext from 'cssnext';
 
 import writeStats from './utils/write-stats';
+import postcssPlugins from './postcss.plugins';
 
 const JS_REGEX = /\.js$|\.jsx$|\.es6$|\.babel$/;
 
@@ -31,9 +31,7 @@ export default {
       {test: /\.css$/, loader: ExtractTextPlugin.extract('style', 'css!postcss')}
     ]
   },
-  postcss: [
-    cssnext({browsers: 'last 2 versions'})
-  ],
+  postcss: postcssPlugins,
   plugins: [
 
     new ExtractTextPlugin('[name]-[hash].css'),

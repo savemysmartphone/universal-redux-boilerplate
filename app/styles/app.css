@@ -9,16 +9,18 @@ body {
   z-index: 998;
 }
 
-.user-list ul,
-.user-list li {
-  list-style-type: none;
-  padding: 10px 0px;
-}
+.user-list {
+  ul,
+  li {
+    list-style-type: none;
+    padding: 10px 0px;
+  }
 
-.user-list li {
-  padding: 10px 20px;
-}
+  li {
+    padding: 10px 20px;
 
-.user-list li img {
-  margin-right: 10px;
+    img {
+      margin-right: 10px;
+    }
+  }
 }

@@ -5,6 +5,7 @@ import cssnext from 'cssnext';
 
 import writeStats from './utils/write-stats';
 import startExpress from './utils/start-express';
+import postcssPlugins from './postcss.plugins';
 
 const PORT = parseInt(process.env.PORT, 10) + 1 || 3001;
 const LOCAL_IP = require('dev-ip')();
@@ -55,9 +56,7 @@ export default {
         {test: /\.css$/, exclude: /node_modules/, loader: 'style!css!postcss'}
       ]
     },
-    postcss: [
-      cssnext()
-    ],
+    postcss: postcssPlugins,
     plugins: [
       new webpack.HotModuleReplacementPlugin(),
       new webpack.NoErrorsPlugin(),
