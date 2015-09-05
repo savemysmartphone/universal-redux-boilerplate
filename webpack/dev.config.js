@@ -1,16 +1,14 @@
 import path from 'path';
 import webpack from 'webpack';
 import { isArray } from 'lodash';
-import cssnext from 'cssnext';
 
-import writeStats from './utils/write-stats';
 import startExpress from './utils/start-express';
+import baseConfig from './base.config.js';
 
 const PORT = parseInt(process.env.PORT, 10) + 1 || 3001;
 const LOCAL_IP = require('dev-ip')();
 const HOST = isArray(LOCAL_IP) && LOCAL_IP[0] || LOCAL_IP || 'localhost';
 const PUBLIC_PATH = `//${HOST}:${PORT}/assets/`;
-const JS_REGEX = /\.js$|\.jsx$|\.es6$|\.babel$/;
 
 export default {
   server: {
@@ -30,6 +28,7 @@ export default {
     }
   },
   webpack: {
+    ...baseConfig,
     devtool: 'cheap-module-source-map',
     entry: {
       app: [
@@ -38,26 +37,21 @@ export default {
       ]
     },
     output: {
-      path: path.join(__dirname, '../dist'),
-      filename: '[name]-[hash].js',
-      chunkFilename: '[name]-[hash].js',
+      ...baseConfig.output,
       publicPath: PUBLIC_PATH
     },
     module: {
-      preLoaders: [
-        {test: JS_REGEX, exclude: /node_modules/, loader: 'eslint'}
-      ],
+      ...baseConfig.module,
+
       loaders: [
-        {test: /\.json$/, exclude: /node_modules/, loader: 'json'},
-        {test: JS_REGEX, exclude: /node_modules/, loader: 'babel'},
+        ...baseConfig.module.loaders,
         {test: /\.(jpe?g|png|gif|svg|woff|woff2|eot|ttf)$/, loader: 'file?name=[sha512:hash:base64:7].[ext]'},
         {test: /\.css$/, exclude: /node_modules/, loader: 'style!css!postcss'}
       ]
     },
-    postcss: [
-      cssnext()
-    ],
     plugins: [
+      ...baseConfig.plugins,
+
       new webpack.HotModuleReplacementPlugin(),
       new webpack.NoErrorsPlugin(),
 
@@ -68,15 +62,7 @@ export default {
         }
       }),
 
-      new webpack.optimize.DedupePlugin(),
-      new webpack.optimize.OccurenceOrderPlugin(),
-
-      function() { this.plugin('done', writeStats); },
       function() { this.plugin('done', startExpress); }
-    ],
-    resolve: {
-      extensions: ['', '.js', '.jsx', '.babel', '.es6', '.json'],
-      modulesDirectories: ['node_modules', 'app']
-    }
+    ]
   }
 };
