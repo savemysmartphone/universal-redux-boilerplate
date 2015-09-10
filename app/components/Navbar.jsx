@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import cx from 'classnames';
 
-import * as I18nActions from 'redux/actions/I18nActions';
+import * as I18nActions from 'ducks/i18n';
 import { getIntlMessage } from 'utils/react-intl-wrapper';
 
 @connect(({ i18n }) => ({ ...i18n }))

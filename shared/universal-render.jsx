@@ -7,7 +7,7 @@ import { Provider } from 'react-redux';
 
 import ReduxResolver from './redux-resolver';
 import routes from '../app/routes';
-import * as I18nActions from 'redux/actions/I18nActions';
+import * as I18nActions from 'ducks/i18n';
 
 const { BROWSER, NODE_ENV } = process.env;
 const cache = {};
